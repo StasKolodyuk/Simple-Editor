@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="simpleeditor.view.EditorViewController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem fx:id="closeMenuItem" mnemonicParsing="false" onAction="#closeMenuItemPressed" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <left>
+      <ToolBar fx:id="toolBar" orientation="VERTICAL" prefHeight="375.0" prefWidth="95.0" stylesheets="@toolsDesign.css" BorderPane.alignment="CENTER">
+        <items>
+            <ToggleButton fx:id="handButton" mnemonicParsing="false" onAction="#handButtonPressed" styleClass="hand-tool" />
+            <ToggleButton fx:id="lineDrawingButton" mnemonicParsing="false" onAction="#lineDrawingButtonPressed" styleClass="draw-line-tool">
+               <contextMenu>
+                  <ContextMenu>
+                    <items>
+                        <CheckMenuItem fx:id="bresenhamMenuItem" mnemonicParsing="false" onAction="#bresenhamMenuItemClicked" text="Bresenham's Line" />
+                        <CheckMenuItem fx:id="ddaMenuItem" mnemonicParsing="false" onAction="#ddaMenuItemClicked" text="DDA Line" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu></ToggleButton>
+            <ToggleButton fx:id="ellipseDrawingButton" mnemonicParsing="false" onAction="#ellipseDrawingButtonPressed" styleClass="ellipse-tool" />
+        </items>
+      </ToolBar>
+   </left>
+   <center>
+      <ScrollPane fx:id="scrollPane" prefHeight="514.0" prefViewportHeight="300.0" prefViewportWidth="400.0" prefWidth="628.0">
+         <content>
+            <Canvas fx:id="canvas" height="1000.0" width="1000.0" BorderPane.alignment="CENTER" />
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

@@ -1,0 +1,23 @@
+.draw-line-tool {
+  -fx-graphic: url('../../resources/lineTool.png');
+  -fx-background-color: transparent;
+}
+
+.hand-tool {
+  -fx-graphic: url('../../resources/handTool.png');
+  -fx-background-color: transparent;
+}
+
+.ellipse-tool {
+  -fx-graphic: url('../../resources/ellipseTool.png');
+  -fx-background-color: transparent;
+}
+
+.circle-tool {
+    -fx-graphic: url('../../resources/circleTool.png');
+    -fx-background-color: transparent;
+}
+
+.toggle-button:selected {
+    -fx-background-color: darkgrey;
+}
