@@ -18,6 +18,11 @@
     -fx-background-color: transparent;
 }
 
+.fill-tool {
+    -fx-graphic: url('../../resources/fillTool.png');
+    -fx-background-color: transparent;
+}
+
 .toggle-button:selected {
     -fx-background-color: darkgrey;
 }

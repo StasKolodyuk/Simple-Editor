@@ -2,34 +2,85 @@
 
 package simpleeditor.graphics;
 
+
+import java.util.AbstractMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import simpleeditor.utility.Constants;
 
 
 public class GraphicsManager {
     
+    private static final Color DEFAULT_CANVAS_COLOR = Color.WHITE;
+    private static final Color DEFAULT_PEN_COLOR = Color.BLACK;
+    private final int CANVAS_CELL_HEIGHT;
+    private final int CANVAS_CELL_WIDTH;
+    
     private static GraphicsManager instance;
 
     private final Canvas canvas;
+    private Color currentPenColor;
+    private final boolean[][] filled;
+    private final Color[][] colors;
     private final GraphicsContext graphicsContext;
     
     private GraphicsManager(Canvas canvas) {
         this.canvas = canvas;
+        CANVAS_CELL_HEIGHT = (int)canvas.getHeight()/Constants.gridSpace;
+        CANVAS_CELL_WIDTH = (int)canvas.getWidth()/Constants.gridSpace;
+        System.out.println(CANVAS_CELL_HEIGHT);
+        System.out.println(CANVAS_CELL_WIDTH);
+        this.filled = new boolean[CANVAS_CELL_HEIGHT][CANVAS_CELL_WIDTH];
+        this.colors = new Color[CANVAS_CELL_HEIGHT][CANVAS_CELL_WIDTH];
+        this.currentPenColor = DEFAULT_PEN_COLOR;
+        for(int i = 0; i < colors.length; i++) {
+            for(int j = 0; j < colors[i].length; j++) {
+                colors[i][j] = DEFAULT_CANVAS_COLOR;
+            }
+        }
         graphicsContext = canvas.getGraphicsContext2D();
     }
     
     public void drawDot(int i, int j) {
-         graphicsContext.fillRect(i*Constants.gridSpace, j*Constants.gridSpace, 
-                                      Constants.gridSpace, Constants.gridSpace);
-         
+        if(checkBounds(i, j)) {
+            filled[i][j] = true;
+            colors[i][j] = currentPenColor;
+            graphicsContext.setFill(currentPenColor);
+            graphicsContext.fillRect(i*Constants.gridSpace, j*Constants.gridSpace, 
+                                          Constants.gridSpace, Constants.gridSpace);
+        }
     }
     
     public void drawLine(int mode, int x1, int y1, int x2, int y2) {
         switch(mode) {
-            case 0: drawBresenhamLine(x1, y1, x2, y2); break;
-            case 1: drawDDALine(x1, y1, x2, y2); break;
+            case 0: 
+                drawBresenhamLine(x1, y1, x2, y2); 
+                break;
+            case 1: 
+                drawDDALine(x1, y1, x2, y2); 
+                break;
             default: throw new IllegalArgumentException("Wrong mode ");
+        }
+    }
+    
+    public void floodFill(int mode, int x, int y) {
+        switch(mode) {
+            case 0:
+                queueFloodFill(x, y);
+                break;
+            case 1:
+                recursiveFloodFill(x, y);
+                break;
+            case 2:
+                xorFloodFill(x, y);
+                break;
+            default:
+                throw new IllegalArgumentException("Wrong mode ");
+
         }
     }
     
@@ -146,6 +197,48 @@ public class GraphicsManager {
             }
             sigma += a2 * ((4 * y) + 6);
         }
+    }
+    
+    private boolean checkBounds(int i, int j) {
+        return i >= 0 && i < CANVAS_CELL_HEIGHT && j >=0 && j < CANVAS_CELL_WIDTH;
+    }
+    
+    public void queueFloodFill(int x, int y) {
+        LinkedList<Map.Entry<Integer, Integer>> queue = new LinkedList<>();
+        queue.push(new AbstractMap.SimpleEntry<>(x,y));
+        while(!queue.isEmpty()) {
+            Entry<Integer, Integer> point = queue.pop();
+            int pointX = point.getKey();
+            int pointY = point.getValue();
+            if(checkBounds(pointX, pointY) && !filled[pointX][pointY]) {
+                colors[pointX][pointY] = currentPenColor;
+                drawDot(pointX, pointY);
+                queue.push(new AbstractMap.SimpleEntry<>(pointX + 1, pointY));
+                queue.push(new AbstractMap.SimpleEntry<>(pointX - 1, pointY));
+                queue.push(new AbstractMap.SimpleEntry<>(pointX, pointY + 1));
+                queue.push(new AbstractMap.SimpleEntry<>(pointX, pointY - 1));
+            }
+        }
+    }
+    
+    public void recursiveFloodFill(int x, int y) {
+        if(!checkBounds(x, y) || filled[x][y]) return;
+        recursiveFloodFill(x - 1, y);
+        recursiveFloodFill(x + 1, y);
+        recursiveFloodFill(x, y - 1);
+        recursiveFloodFill(x, y + 1);
+    }
+    
+    public void xorFloodFill(int x, int y) {
+        queueFloodFill(x, y);
+    }
+    
+    public void rotate(double angle) {
+        
+    }
+    
+    public void translate(int dx, int dy) {
+        
     }
     
     public void drawGrid() {

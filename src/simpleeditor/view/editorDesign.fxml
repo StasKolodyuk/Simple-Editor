@@ -31,7 +31,7 @@
       </MenuBar>
    </top>
    <left>
-      <ToolBar fx:id="toolBar" orientation="VERTICAL" prefHeight="375.0" prefWidth="95.0" stylesheets="@toolsDesign.css" BorderPane.alignment="CENTER">
+      <ToolBar fx:id="toolBar" orientation="VERTICAL" prefHeight="375.0" prefWidth="75.0" stylesheets="@toolsDesign.css" BorderPane.alignment="CENTER">
         <items>
             <ToggleButton fx:id="handButton" mnemonicParsing="false" onAction="#handButtonPressed" styleClass="hand-tool" />
             <ToggleButton fx:id="lineDrawingButton" mnemonicParsing="false" onAction="#lineDrawingButtonPressed" styleClass="draw-line-tool">
@@ -44,6 +44,45 @@
                   </ContextMenu>
                </contextMenu></ToggleButton>
             <ToggleButton fx:id="ellipseDrawingButton" mnemonicParsing="false" onAction="#ellipseDrawingButtonPressed" styleClass="ellipse-tool" />
+            <ToggleButton fx:id="fillButton" mnemonicParsing="false" onAction="#fillButtonPressed" styleClass="fill-tool">
+               <contextMenu>
+                  <ContextMenu>
+                     <items>
+                        <CheckMenuItem fx:id="queueFillItem" mnemonicParsing="false" onAction="#queueFillItemClicked" text="Queue Fill" />
+                        <CheckMenuItem fx:id="recursiveFillItem" mnemonicParsing="false" onAction="#recursiveFillItemClicked" text="Recursive Fill" />
+                        <CheckMenuItem mnemonicParsing="false" onAction="#xorFillItemClicked" text="XOR Fill" fx:id="xorFillItem" />
+                     </items>
+                  </ContextMenu>
+               </contextMenu></ToggleButton>
+            <HBox>
+               <children>
+                  <TextField fx:id="rotationTextField" maxWidth="30.0" minWidth="30.0" prefWidth="30.0">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Button fx:id="rotateButton" mnemonicParsing="false" onAction="#rotateButtonPressed" text="Rotate" />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <TextField maxWidth="30.0" minWidth="30.0" prefWidth="30.0" fx:id="xTranslationTextField">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <TextField fx:id="yTranslationTextField" alignment="CENTER_RIGHT" maxWidth="30.0" minWidth="30.0" prefWidth="30.0">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </TextField>
+                  <Button fx:id="translateButton" mnemonicParsing="false" onAction="#translateButtonPressed" text="Translate">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
         </items>
       </ToolBar>
    </left>
